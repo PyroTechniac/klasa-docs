@@ -7,14 +7,14 @@ const DocTypedef = require('./DocTypedef');
 const DocInterface = require('./DocInterface');
 
 const docCache = new Map();
-const ICON = 'https://i.imgur.com/LM8YCyk.png';
+const ICON = 'https://klasa.js.org/static/klasa_icon.svg';
 
 class Doc extends DocBase {
 
 	constructor(name, docs) {
 		super(docs);
 		this.name = name;
-		this.baseURL = `https://discord.js.org/#/docs/${name}/`;
+		this.baseURL = `https://klasa.js.org/#/docs/${name}/`;
 		this.repoURL = Doc.getRepoURL(name);
 
 		this.adoptAll(docs.classes, DocClass);
@@ -102,9 +102,7 @@ class Doc extends DocBase {
 	baseEmbed() {
 		const [project, branch] = this.name.split('/');
 		const title = {
-			main: 'Discord.js Docs',
-			commando: 'Commando Docs',
-			rpc: 'RPC Docs'
+			main: 'Klasa Docs'
 		}[project];
 
 		return {
@@ -140,12 +138,10 @@ class Doc extends DocBase {
 	static getRepoURL(id) {
 		const [name, branch] = id.split('/');
 		const project = {
-			main: 'discord.js',
-			commando: 'Commando',
-			rpc: 'RPC'
+			main: 'klasa'
 		}[name];
 
-		return `https://github.com/discordjs/${project}/blob/${branch}/`;
+		return `https://github.com/dirigeants/${project}/blob/${branch}/`;
 	}
 
 	static async fetch(project, branch, { force } = {}) {
@@ -153,15 +149,13 @@ class Doc extends DocBase {
 		if (!force && docCache.has(name)) return docCache.get(name);
 
 		const longProject = {
-			main: 'discord.js',
-			commando: 'discord.js-commando',
-			rpc: 'discord-rpc'
+			main: 'klasa'
 		}[project] || [];
 		if (!longProject) return null;
 
 		try {
 			const { data } = await fetch(
-				`https://raw.githubusercontent.com/discordjs/${longProject}/docs/${branch}.json`
+				`https://raw.githubusercontent.com/dirigeants/${longProject}/docs/${branch}.json`
 			);
 			return new Doc(name, data);
 		} catch (err) {
