@@ -2,5 +2,5 @@
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "extends": "standard"
+  "extends": "klasa"
 }

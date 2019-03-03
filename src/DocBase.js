@@ -1,78 +1,80 @@
 const types = {
-  CLASS: 'class',
-  EVENT: 'event',
-  INTERFACE: 'interface',
-  METHOD: 'method',
-  PARAM: 'param',
-  PROP: 'prop',
-  TYPEDEF: 'typedef'
-}
+	CLASS: 'class',
+	EVENT: 'event',
+	INTERFACE: 'interface',
+	METHOD: 'method',
+	PARAM: 'param',
+	PROP: 'prop',
+	TYPEDEF: 'typedef'
+};
 
 class DocBase {
-  constructor (json) {
-    this.originalJSON = json
-    this.children = new Map()
-  }
 
-  addChild (child) {
-    this.children.set(`${child.name.toLowerCase()}-${child.docType}`, child)
-  }
+	constructor(json) {
+		this.originalJSON = json;
+		this.children = new Map();
+	}
 
-  adoptAll (enumerable, Constructor) {
-    if (!enumerable) return
-    for (const elem of enumerable) {
-      this.addChild(new Constructor(this, elem))
-    }
-  }
+	addChild(child) {
+		this.children.set(`${child.name.toLowerCase()}-${child.docType}`, child);
+	}
 
-  childrenOfType (type) {
-    const filtered = Array.from(this.children.values())
-      .filter(child => child.docType === type)
+	adoptAll(enumerable, Constructor) {
+		if (!enumerable) return;
+		for (const elem of enumerable) {
+			this.addChild(new Constructor(this, elem));
+		}
+	}
 
-    return filtered.length ? filtered : null
-  }
+	childrenOfType(type) {
+		const filtered = Array.from(this.children.values())
+			.filter(child => child.docType === type);
 
-  findChild (query) {
-    query = query.toLowerCase()
+		return filtered.length ? filtered : null;
+	}
 
-    return Array.from(this.children.values()).find(
-      child => query.endsWith('()')
-        ? child.name.toLowerCase() === query.slice(0, -2) && child.docType === types.METHOD
-        : child.name.toLowerCase() === query
-    )
-  }
+	findChild(query) {
+		query = query.toLowerCase();
 
-  get classes () {
-    return this.childrenOfType(types.CLASS)
-  }
+		return Array.from(this.children.values()).find(
+			child => query.endsWith('()') ?
+				child.name.toLowerCase() === query.slice(0, -2) && child.docType === types.METHOD :
+				child.name.toLowerCase() === query
+		);
+	}
 
-  get typedefs () {
-    return this.childrenOfType(types.TYPEDEF)
-  }
+	get classes() {
+		return this.childrenOfType(types.CLASS);
+	}
 
-  get interfaces () {
-    return this.childrenOfType(types.INTERFACE)
-  }
+	get typedefs() {
+		return this.childrenOfType(types.TYPEDEF);
+	}
 
-  get props () {
-    return this.childrenOfType(types.PROP)
-  }
+	get interfaces() {
+		return this.childrenOfType(types.INTERFACE);
+	}
 
-  get methods () {
-    return this.childrenOfType(types.METHOD)
-  }
+	get props() {
+		return this.childrenOfType(types.PROP);
+	}
 
-  get events () {
-    return this.childrenOfType(types.EVENT)
-  }
+	get methods() {
+		return this.childrenOfType(types.METHOD);
+	}
 
-  get params () {
-    return this.childrenOfType(types.PARAM)
-  }
+	get events() {
+		return this.childrenOfType(types.EVENT);
+	}
 
-  static get types () {
-    return types
-  }
+	get params() {
+		return this.childrenOfType(types.PARAM);
+	}
+
+	static get types() {
+		return types;
+	}
+
 }
 
-module.exports = DocBase
+module.exports = DocBase;

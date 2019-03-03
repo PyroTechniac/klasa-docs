@@ -1,11 +1,13 @@
-const DocElement = require('./DocElement')
-const { flatten } = require('./Util')
+const DocElement = require('./DocElement');
+const { flatten } = require('./Util');
 
 class DocTypedef extends DocElement {
-  constructor (doc, data) {
-    super(doc, DocElement.types.TYPEDEF, data)
-    this.type = flatten(data.type)
-  }
+
+	constructor(doc, data) {
+		super(doc, DocElement.types.TYPEDEF, data);
+		this.type = flatten(data.type);
+	}
+
 }
 
-module.exports = DocTypedef
+module.exports = DocTypedef;
